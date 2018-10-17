@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+    <string name="insert_data">Insert Data</string>
+    <string name="display_data">Display Data</string>
+    <string name="product_name">Product Name</string>
+    <string name="enter_product_name">Enter Product Name</string>
+    <string name="enter_price">Enter Price</string>
+    <string name="price">Price</string>
+    <string name="quantity">Quantity</string>
+    <string name="enter_quantity">Enter Quantity</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_phone_no">Supplier Phone No.</string>
+    <string name="enter_supplier_name">Enter Supplier Name</string>
+    <string name="enter_supplier_phone_no">Enter Supplier Phone No.</string>
+    <string name="text_will_display_here">Text will display here</string>
+    <string name="the_bookstore_contains">The BookStore contains</string>
+    <string name="items">items.</string>
+</resources>
