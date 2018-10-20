@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.shivam.inventoryapp.R;
 
 public class inventoryProvider extends ContentProvider {
 
@@ -15,6 +19,7 @@ public class inventoryProvider extends ContentProvider {
     private static final int inventory = 100;
     private static final int inventory_Id = 101;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    public static final String LOG_TAG = inventoryProvider.class.getSimpleName();
 
     static {
         sUriMatcher.addURI(BookStoreContract.CONTENT_AUTHORITY, BookStoreContract.PATH_PRODUCT_INFORMATION, inventory);
@@ -76,12 +81,10 @@ public class inventoryProvider extends ContentProvider {
         switch(match)
         {
          case inventory:
-             uri = insert_data(uri, contentValues);
-             break;
+             return insert_data(uri, contentValues);
          default:
              throw new IllegalArgumentException("Insertion is not supported with uri " + uri);
         }
-        return uri;
     }
 
     @Override
@@ -109,6 +112,11 @@ public class inventoryProvider extends ContentProvider {
         bookStoreDataBaseHelper = new BookStoreDataBaseHelper(getContext());
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         long id = msqLiteDatabase.insert(BookStoreContract.BookStoreEntry.TABLE_NAME,null,contentValues);
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+        Toast.makeText(getContext(),R.string.data_inserted, Toast.LENGTH_SHORT).show();
         return ContentUris.withAppendedId(uri, id);
     }
     private int update_data(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
@@ -117,6 +125,11 @@ public class inventoryProvider extends ContentProvider {
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         int id = msqLiteDatabase.update(BookStoreContract.BookStoreEntry.TABLE_NAME, contentValues,
                 selection, selectionArgs);
+        if (id == -1) {
+            Log.e("twitter", "Failed to insert row for " + uri);
+            return 0;
+        }
+        Toast.makeText(getContext(),R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
         return id;
     }
 }

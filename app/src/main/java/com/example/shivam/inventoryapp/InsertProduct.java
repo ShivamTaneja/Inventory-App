@@ -1,19 +1,13 @@
 package com.example.shivam.inventoryapp;
 
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.example.shivam.inventoryapp.Data.BookStoreContract;
-import com.example.shivam.inventoryapp.Data.BookStoreDataBaseHelper;
 
 public class InsertProduct extends AppCompatActivity {
 
@@ -40,8 +34,8 @@ public class InsertProduct extends AppCompatActivity {
         productName = editProductName.getText().toString().trim();
         try
         {
-            price = Double.parseDouble(editPrice.getText().toString());
-            quantity = Integer.parseInt(editQuantity.getText().toString());
+            price = Double.parseDouble(editPrice.getText().toString().trim());
+            quantity = Integer.parseInt(editQuantity.getText().toString().trim());
         }
         catch (NumberFormatException e){}
         supplierName  = editSupplierName.getText().toString().trim();
@@ -55,6 +49,7 @@ public class InsertProduct extends AppCompatActivity {
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
         Uri uri = getContentResolver().insert(BookStoreContract.BookStoreEntry.CONTENT_URI,contentValues);
+
     }
 
     @Override

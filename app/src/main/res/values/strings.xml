@@ -22,4 +22,10 @@
     <string name="one">1</string>
     <string name="discard_changes">Discard Changes</string>
     <string name="edit_details">Edit Details</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="call_to_supplier">Call to Supplier</string>
+    <string name="delete_record">Delete Record</string>
+    <string name="data_inserted">Data Inserted</string>
+    <string name="data_changed_successfully">Data Changed successfully</string>
+    <string name="data_not_changed">data not changed</string>
 </resources>
