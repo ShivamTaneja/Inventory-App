@@ -1,7 +1,9 @@
 package com.example.shivam.inventoryapp;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +34,7 @@ public class InsertProduct extends AppCompatActivity {
         editSupplierPhoneNumber = findViewById(R.id.editSupplierPhoneNumber);
 
     }
+
     private void insert_data()
     {
         productName = editProductName.getText().toString().trim();
@@ -44,9 +47,6 @@ public class InsertProduct extends AppCompatActivity {
         supplierName  = editSupplierName.getText().toString().trim();
         supplierPhoneNumber = editSupplierPhoneNumber.getText().toString().trim();
 
-        BookStoreDataBaseHelper mBookStoreDataBaseHelper = new BookStoreDataBaseHelper(this);
-        SQLiteDatabase msqLiteDatabase = mBookStoreDataBaseHelper.getWritableDatabase();
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME, productName);
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_PRICE, price);
@@ -54,13 +54,7 @@ public class InsertProduct extends AppCompatActivity {
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierName);
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
-        long newRowId = msqLiteDatabase.insert(BookStoreContract.BookStoreEntry.TABLE_NAME, null , contentValues);
-
-        if (newRowId == -1) {
-            Toast.makeText(this, "Error with saving ", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
-        }
+        Uri uri = getContentResolver().insert(BookStoreContract.BookStoreEntry.CONTENT_URI,contentValues);
     }
 
     @Override

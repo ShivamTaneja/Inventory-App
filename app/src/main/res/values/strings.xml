@@ -21,4 +21,5 @@
     <string name="enter_decrease_in_qty">Enter Decrease in Qty</string>
     <string name="one">1</string>
     <string name="discard_changes">Discard Changes</string>
+    <string name="edit_details">Edit Details</string>
 </resources>
