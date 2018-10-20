@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InsertProduct">
+
+    <TextView
+        android:id="@+id/ProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/eight"
+        android:layout_marginLeft="@dimen/eight"
+        android:text="@string/product_name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editProductName"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <EditText
+        android:id="@+id/editProductName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen"
+        android:layout_marginEnd="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
+        android:ems="10"
+        android:hint="@string/enter_product_name"
+        android:inputType="textPersonName"
+        android:autofillHints="@string/enter_product_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editPrice"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:hint="@string/enter_price"
+        android:inputType="numberDecimal"
+        android:autofillHints="@string/price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProductName" />
+
+    <TextView
+        android:id="@+id/Price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/eight"
+        android:layout_marginLeft="@dimen/eight"
+        android:text="@string/price"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editPrice"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/Quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/eight"
+        android:layout_marginLeft="@dimen/eight"
+        android:text="@string/quantity"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editQuantity"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editQuantity"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen"
+        android:layout_marginEnd="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
+        android:ems="10"
+        android:hint="@string/enter_quantity"
+        android:inputType="number"
+        android:autofillHints="@string/quantity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editPrice" />
+
+    <TextView
+        android:id="@+id/SupplierName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/eight"
+        android:layout_marginLeft="@dimen/eight"
+        android:text="@string/supplier_name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSupplierName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/SupplierPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/eight"
+        android:layout_marginLeft="@dimen/eight"
+        android:text="@string/supplier_phone_no"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSupplierPhoneNumber"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editSupplierName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen"
+        android:layout_marginEnd="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
+        android:ems="10"
+        android:hint="@string/enter_supplier_name"
+        android:inputType="textPersonName"
+        android:autofillHints="@string/supplier_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editQuantity" />
+
+    <EditText
+        android:id="@+id/editSupplierPhoneNumber"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen"
+        android:layout_marginEnd="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
+        android:ems="10"
+        android:hint="@string/enter_supplier_phone_no"
+        android:inputType="textPersonName"
+        android:autofillHints="@string/enter_supplier_phone_no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editSupplierName" />
+
+</android.support.constraint.ConstraintLayout>
