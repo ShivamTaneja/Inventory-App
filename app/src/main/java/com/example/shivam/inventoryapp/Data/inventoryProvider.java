@@ -70,7 +70,15 @@ public class inventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case inventory:
+                return BookStoreContract.BookStoreEntry.CONTENT_LIST_TYPE;
+            case inventory_Id:
+                return BookStoreContract.BookStoreEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
     @Nullable
