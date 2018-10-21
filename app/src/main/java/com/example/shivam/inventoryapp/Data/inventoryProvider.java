@@ -89,13 +89,25 @@ public class inventoryProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+
+        SQLiteDatabase sqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        switch(match)
+        {
+            case inventory:
+                return sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection, selectionArgs);
+            case inventory_Id:
+                selection = BookStoreContract.BookStoreEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection,selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not supported with uri " + uri );
+        }
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
 
-        int id;
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case inventory:
@@ -139,8 +151,6 @@ public class inventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires valid phone number");
 
 
-
-        bookStoreDataBaseHelper = new BookStoreDataBaseHelper(getContext());
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         long id = msqLiteDatabase.insert(BookStoreContract.BookStoreEntry.TABLE_NAME,null,contentValues);
         if (id == -1) {
@@ -190,7 +200,6 @@ public class inventoryProvider extends ContentProvider {
                 throw new IllegalArgumentException("Product Supplier name is missing");
             }
         }
-        bookStoreDataBaseHelper = new BookStoreDataBaseHelper(getContext());
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         int id = msqLiteDatabase.update(BookStoreContract.BookStoreEntry.TABLE_NAME, contentValues,
                 selection, selectionArgs);
@@ -201,4 +210,5 @@ public class inventoryProvider extends ContentProvider {
         Toast.makeText(getContext(),R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
         return id;
     }
+
 }

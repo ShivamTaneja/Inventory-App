@@ -88,6 +88,9 @@ public class EditProductDetails extends AppCompatActivity {
             case R.id.saveChanges:
                 save_changes();
                 break;
+            case R.id.discardChanges:
+                finish();
+                break;
             case R.id.deleteRecord:
                 delete_record();
             default:

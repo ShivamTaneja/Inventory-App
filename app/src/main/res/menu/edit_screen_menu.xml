@@ -5,6 +5,8 @@
         android:id="@+id/saveChanges"
         android:title="@string/save_changes"
         />
+    <item android:id="@+id/discardChanges"
+        android:title="@string/discard_changes"/>
     <item
         android:id="@+id/deleteRecord"
         android:title="@string/delete_record"/>
