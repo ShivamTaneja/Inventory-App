@@ -17,10 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditProductDetails" />
-        <activity android:name=".InsertProduct"></activity>
+        <activity android:name=".InsertProduct"/>
         <provider
             android:authorities="com.example.shivam.inventoryapp"
-            android:name=".Data.inventoryProvider"
+            android:name=".Data.InventoryProvider"
             android:exported="false"/>
     </application>
 

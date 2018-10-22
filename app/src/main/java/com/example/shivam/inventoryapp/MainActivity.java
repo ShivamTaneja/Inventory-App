@@ -1,32 +1,28 @@
 package com.example.shivam.inventoryapp;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ListView;
+
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 import com.example.shivam.inventoryapp.Data.BookStoreDataBaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
     FloatingActionButton floatingActionButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recyclerView);
+
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -41,12 +37,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       // DisplayDatabaseInfo();
+        DisplayDatabaseInfo();
     }
 
     private void DisplayDatabaseInfo() {
 
-        String[] projection ={
+        BookStoreDataBaseHelper bookStoreDataBaseHelper = new BookStoreDataBaseHelper(this);
+        SQLiteDatabase sqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
+        Cursor cursor_data = sqLiteDatabase.rawQuery("SELECT * FROM " + BookStoreEntry.TABLE_NAME, null);
+
+        ListView listView = findViewById(R.id.listview);
+        BookInventoryCursorAdapter bookInventoryCursorAdapter = new BookInventoryCursorAdapter(null, cursor_data);
+        listView.setAdapter(bookInventoryCursorAdapter);
+        bookInventoryCursorAdapter.changeCursor(cursor_data);
+
+/*        String[] projection ={
                 BookStoreEntry._ID,
                 BookStoreEntry.COLUMN_PRODUCT_NAME,
                 BookStoreEntry.COLUMN_PRODUCT_PRICE,
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor cursor = getContentResolver().query(BookStoreEntry.CONTENT_URI,
                 projection, null, null, null);
-      /*  textDisplay.setText(getString(R.string.the_bookstore_contains) + " " + cursor.getCount() + " "+ getString(R.string.items) + " \n");
+       textDisplay.setText(getString(R.string.the_bookstore_contains) + " " + cursor.getCount() + " "+ getString(R.string.items) + " \n");
         textDisplay.append(BookStoreEntry.COLUMN_PRODUCT_ID + " - " + BookStoreEntry.COLUMN_PRODUCT_NAME + " - " + BookStoreEntry.COLUMN_PRODUCT_PRICE + "\n");
         int idColumnIndex = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_ID);
         int nameColumnIndex = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_NAME);

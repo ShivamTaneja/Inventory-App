@@ -7,8 +7,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <ListView
+        android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical" />
@@ -25,8 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
         android:focusable="true" />
-
-
 </android.support.constraint.ConstraintLayout>
 
 

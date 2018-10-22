@@ -2,4 +2,5 @@
 <resources>
     <dimen name="eight">8dp</dimen>
     <dimen name="sixteen">16dp</dimen>
+    <dimen name="activity_margin">4dp</dimen>
 </resources>

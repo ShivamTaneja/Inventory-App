@@ -26,7 +26,6 @@ public class InsertProduct extends AppCompatActivity {
         editQuantity = findViewById(R.id.editQuantity);
         editSupplierName = findViewById(R.id.editSupplierName);
         editSupplierPhoneNumber = findViewById(R.id.editSupplierPhoneNumber);
-
     }
 
     private void insert_data()
@@ -49,7 +48,6 @@ public class InsertProduct extends AppCompatActivity {
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
         Uri uri = getContentResolver().insert(BookStoreContract.BookStoreEntry.CONTENT_URI,contentValues);
-
     }
 
     @Override

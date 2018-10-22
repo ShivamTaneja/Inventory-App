@@ -13,25 +13,24 @@ import android.widget.Toast;
 
 import com.example.shivam.inventoryapp.R;
 
-public class inventoryProvider extends ContentProvider {
+public class InventoryProvider extends ContentProvider {
 
-    private BookStoreDataBaseHelper bookStoreDataBaseHelper;
+    private BookStoreDataBaseHelper bookStoreDataBaseHelper = new BookStoreDataBaseHelper(getContext());
     private static final int inventory = 100;
     private static final int inventory_Id = 101;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    public static final String LOG_TAG = inventoryProvider.class.getSimpleName();
+    public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
 
     static {
         sUriMatcher.addURI(BookStoreContract.CONTENT_AUTHORITY, BookStoreContract.PATH_PRODUCT_INFORMATION, inventory);
         sUriMatcher.addURI(BookStoreContract.CONTENT_AUTHORITY, BookStoreContract.PATH_PRODUCT_INFORMATION + "/#", inventory_Id);
     }
 
-    public inventoryProvider()
-    {
+    public InventoryProvider() {
 
     }
 
-    public inventoryProvider(BookStoreDataBaseHelper bookStoreDataBaseHelper) {
+    public InventoryProvider(BookStoreDataBaseHelper bookStoreDataBaseHelper) {
         this.bookStoreDataBaseHelper = bookStoreDataBaseHelper;
     }
 
@@ -45,7 +44,6 @@ public class inventoryProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs ,String sortOrder) {
 
-        bookStoreDataBaseHelper = new BookStoreDataBaseHelper(getContext());
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
         Cursor cursor;
@@ -83,8 +81,7 @@ public class inventoryProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues)
-    {
+    public Uri insert(Uri uri, ContentValues contentValues){
         final int match = sUriMatcher.match(uri);
         switch(match)
         {
@@ -129,8 +126,7 @@ public class inventoryProvider extends ContentProvider {
         }
     }
 
-    private Uri insert_data(Uri uri, ContentValues contentValues)
-    {
+    private Uri insert_data(Uri uri, ContentValues contentValues){
         String productName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME);
         if(productName == null)
         {
@@ -168,8 +164,8 @@ public class inventoryProvider extends ContentProvider {
         Toast.makeText(getContext(),R.string.data_inserted, Toast.LENGTH_SHORT).show();
         return ContentUris.withAppendedId(uri, id);
     }
-    private int update_data(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
-    {
+
+    private int update_data(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if(contentValues.size() == 0)
             return 0;
         if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME))
@@ -212,7 +208,7 @@ public class inventoryProvider extends ContentProvider {
         int id = msqLiteDatabase.update(BookStoreContract.BookStoreEntry.TABLE_NAME, contentValues,
                 selection, selectionArgs);
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, "Failed to update row for " + uri);
             return 0;
         }
         Toast.makeText(getContext(),R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();

@@ -53,8 +53,6 @@ public class EditProductDetails extends AppCompatActivity {
         supplierPhoneNumber = editSupplierPhoneNumber.getText().toString().trim();
 
         quantity = quantity + increaseQuantityBy - decreaseQuantityBy;
-        if(quantity < 0)
-            quantity = 0;
         ContentValues contentValues = new ContentValues();
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME, productName);
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_PRICE, price);
