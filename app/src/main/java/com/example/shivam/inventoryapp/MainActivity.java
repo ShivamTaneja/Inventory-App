@@ -2,11 +2,9 @@ package com.example.shivam.inventoryapp;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.content.ContentValues;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
-import com.example.shivam.inventoryapp.Data.BookStoreDataBaseHelper;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -43,16 +40,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ListView listView = findViewById(R.id.listview);
         listView.setEmptyView(emptyView);
 
-        /*
-        BookStoreDataBaseHelper bookStoreDataBaseHelper = new BookStoreDataBaseHelper(this);
-        SQLiteDatabase sqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
-        Cursor cursor_data = sqLiteDatabase.rawQuery("SELECT * FROM " + BookStoreEntry.TABLE_NAME, null);*/
-
         bookInventoryCursorAdapter = new BookInventoryCursorAdapter(this, null);
         listView.setAdapter(bookInventoryCursorAdapter);
-       // bookInventoryCursorAdapter.changeCursor(cursor_data);
         getSupportLoaderManager().initLoader(BOOK_LOADER, null, this);
-
     }
 
     @NonNull
@@ -62,12 +52,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new CursorLoader(this, BookStoreEntry.CONTENT_URI, projection,
                 null, null, null);
     }
-
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         bookInventoryCursorAdapter.swapCursor(cursor);
     }
-
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 

@@ -62,6 +62,7 @@ public class InventoryProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query illegal Uri " + uri );
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -77,6 +78,7 @@ public class InventoryProvider extends ContentProvider {
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
+
     }
 
     @Nullable
@@ -97,17 +99,23 @@ public class InventoryProvider extends ContentProvider {
 
         SQLiteDatabase sqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+        int del_count=0;
         switch(match)
         {
             case inventory:
-                return sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection, selectionArgs);
+                del_count = sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case inventory_Id:
                 selection = BookStoreContract.BookStoreEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection,selectionArgs);
+                del_count = sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection,selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported with uri " + uri );
         }
+        if(del_count > 0)
+            getContext().getContentResolver().notifyChange(uri , null);
+        return del_count;
     }
 
     @Override
@@ -162,6 +170,7 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
         Toast.makeText(getContext(),R.string.data_inserted, Toast.LENGTH_SHORT).show();
+        getContext().getContentResolver().notifyChange(uri, null);
         return ContentUris.withAppendedId(uri, id);
     }
 
@@ -212,6 +221,7 @@ public class InventoryProvider extends ContentProvider {
             return 0;
         }
         Toast.makeText(getContext(),R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
+        getContext().getContentResolver().notifyChange(uri, null);
         return id;
     }
 
