@@ -1,7 +1,9 @@
 package com.example.shivam.inventoryapp;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 
@@ -43,6 +46,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         bookInventoryCursorAdapter = new BookInventoryCursorAdapter(this, null);
         listView.setAdapter(bookInventoryCursorAdapter);
         getSupportLoaderManager().initLoader(BOOK_LOADER, null, this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), EditProductDetails.class);
+                Uri currentUri = ContentUris.withAppendedId(BookStoreEntry.CONTENT_URI, id);
+                intent.setData(currentUri);
+                startActivity(intent);
+            }
+        });
     }
 
     @NonNull
@@ -71,10 +84,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.editDetails:
-                Intent intent = new Intent(this, EditProductDetails.class);
-                startActivity(intent);
-                break;
             case R.id.deleteAllRecord:
                 break;
             default:

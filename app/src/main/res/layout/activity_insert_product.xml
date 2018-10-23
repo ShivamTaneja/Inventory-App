@@ -122,7 +122,7 @@
         android:layout_marginRight="@dimen/sixteen"
         android:ems="10"
         android:hint="@string/enter_supplier_phone_no"
-        android:inputType="textPersonName"
+        android:inputType="phone"
         android:autofillHints="@string/enter_supplier_phone_no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSupplierName" />

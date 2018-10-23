@@ -50,14 +50,14 @@ public class InventoryProvider extends ContentProvider {
         switch (match)
         {
             case inventory:
-               cursor = msqLiteDatabase.query(BookStoreContract.BookStoreEntry.TABLE_NAME,projection, selection, null,
-                    null, null, sortOrder );
+                cursor = msqLiteDatabase.query(BookStoreContract.BookStoreEntry.TABLE_NAME,projection, selection, null,
+                        null, null, sortOrder );
                 break;
             case inventory_Id:
                 selection = BookStoreContract.BookStoreEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = msqLiteDatabase.query(BookStoreContract.BookStoreEntry.TABLE_NAME,projection, selection, selectionArgs
-                            ,null, null, sortOrder);
+                        ,null, null, sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot query illegal Uri " + uri );
@@ -87,10 +87,10 @@ public class InventoryProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch(match)
         {
-         case inventory:
-             return insert_data(uri, contentValues);
-         default:
-             throw new IllegalArgumentException("Insertion is not supported with uri " + uri);
+            case inventory:
+                return insert_data(uri, contentValues);
+            default:
+                throw new IllegalArgumentException("Insertion is not supported with uri " + uri);
         }
     }
 
@@ -221,7 +221,8 @@ public class InventoryProvider extends ContentProvider {
             return 0;
         }
         Toast.makeText(getContext(),R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
-        getContext().getContentResolver().notifyChange(uri, null);
+        if(id>0)
+            getContext().getContentResolver().notifyChange(uri, null);
         return id;
     }
 
