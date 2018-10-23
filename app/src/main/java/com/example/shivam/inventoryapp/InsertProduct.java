@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.shivam.inventoryapp.Data.BookStoreContract;
 
 public class InsertProduct extends AppCompatActivity {
@@ -48,6 +50,10 @@ public class InsertProduct extends AppCompatActivity {
         contentValues.put(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
         Uri uri = getContentResolver().insert(BookStoreContract.BookStoreEntry.CONTENT_URI,contentValues);
+        if(uri == null)
+            Toast.makeText(getApplicationContext(), "Data not inserted" , Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Data inserted" , Toast.LENGTH_SHORT).show();
     }
 
     @Override

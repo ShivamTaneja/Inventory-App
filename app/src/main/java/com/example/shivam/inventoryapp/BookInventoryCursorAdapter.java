@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
 import com.example.shivam.inventoryapp.Data.BookStoreContract;
-import com.example.shivam.inventoryapp.R;
+
 
 import java.util.zip.Inflater;
 
@@ -17,14 +16,6 @@ public class BookInventoryCursorAdapter extends CursorAdapter {
 
     public BookInventoryCursorAdapter(Context context, Cursor c) {
         super(context, c);
-    }
-
-    public BookInventoryCursorAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-    }
-
-    public BookInventoryCursorAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
     }
 
     @Override

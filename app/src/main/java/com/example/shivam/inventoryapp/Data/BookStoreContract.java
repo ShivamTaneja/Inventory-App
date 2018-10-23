@@ -6,9 +6,9 @@ import android.provider.BaseColumns;
 
 public final class BookStoreContract {
 
-    public static final String CONTENT_AUTHORITY = "com.example.shivam.inventoryapp";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    public static final String PATH_PRODUCT_INFORMATION = "ProductInformation";
+    private static final String CONTENT_AUTHORITY = "com.example.shivam.inventoryapp";
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    static final String PATH_PRODUCT_INFORMATION = "ProductInformation";
 
     private BookStoreContract() {
     }

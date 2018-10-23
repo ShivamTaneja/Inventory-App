@@ -9,14 +9,14 @@ import android.support.annotation.Nullable;
 public class BookStoreDataBaseHelper extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "BookStoreInformation.db";
-    private static final Integer DATABASE_VERSION = 3;
+    private static final Integer DATABASE_VERSION = 4;
     String SQL_CREATE_ENTRIES = "CREATE TABLE " + BookStoreContract.BookStoreEntry.TABLE_NAME +  " ( "
             + BookStoreEntry.COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + BookStoreEntry.COLUMN_PRODUCT_NAME  + " TEXT NOT NULL , "
             + BookStoreEntry.COLUMN_PRODUCT_PRICE + " REAL NOT NULL , "
             + BookStoreEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER DEFAULT 1 , "
             + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME + " TEXT NOT NULL ,"
-            + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER + "TEXT );" ;
+            + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER + " TEXT DEFAULT NULL );" ;
 
     String SQL_DELETE_ENTRIES = "DROP TABLE " + BookStoreContract.BookStoreEntry.TABLE_NAME;
 

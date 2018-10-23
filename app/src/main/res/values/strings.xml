@@ -28,4 +28,7 @@
     <string name="data_inserted">Data Inserted</string>
     <string name="data_changed_successfully">Data Changed successfully</string>
     <string name="data_not_changed">data not changed</string>
+    <string name="no_item_is_entered_yet">No Item Is Entered Yet</string>
+    <string name="click_below_button_to_enter_data">Click below button to enter data</string>
+    <string name="delete_all_data">Delete All data</string>
 </resources>
