@@ -40,6 +40,14 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
     private static final int EXISTING_LOADER = 0;
     private boolean dataHasChanged = false;
 
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            dataHasChanged = true;
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,29 +92,6 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         showUnsavedChangesDialog(discardButtonClickListener);
     }
 
-    private void showUnsavedChangesDialog( DialogInterface.OnClickListener discardButtonClickListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.unsaved_changes_dialog_msg);
-        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            dataHasChanged = true;
-            return false;
-        }
-    };
 
     private void save_changes()
     {
@@ -139,10 +124,17 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         } else {
             Toast.makeText(this, R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
         }
+        finish();
     }
 
     private void delete_record(){
-
+        int id = getContentResolver().delete(currentUri, null, null);
+        if (id == -1) {
+            Toast.makeText(this, R.string.editor_delete_data_failed, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.editor_delete_data_successful, Toast.LENGTH_SHORT).show();
+        }
+        finish();
     }
 
     @NonNull
@@ -192,6 +184,42 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         editSupplierPhoneNumber.setText("");
     }
 
+    private void showUnsavedChangesDialog( DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                delete_record();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_screen_menu, menu);
@@ -209,7 +237,7 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
                 finish();
                 break;
             case R.id.deleteRecord:
-                delete_record();
+                showDeleteConfirmationDialog();
             default:
                 return true;
         }
