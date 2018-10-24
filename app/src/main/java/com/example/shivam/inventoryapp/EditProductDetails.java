@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,18 +20,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 
+import javax.security.auth.login.LoginException;
+
 public class EditProductDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     EditText editProductName, editPrice, editQuantity, editSupplierName, editSupplierPhoneNumber,
              editIncreaseQuantity, editDecreaseQuantity;
     Button buttonSupplierPhoneNumber;
 
-    String productName="", supplierName="", supplierPhoneNumber="";
+    String productName, supplierName, supplierPhoneNumber;
     int quantity=0, increaseQuantityBy=0, decreaseQuantityBy=0;
     Double price= 0.0;
 
     Uri currentUri;
     private static final int EXISTING_LOADER = 0;
+    private boolean dataHasChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +56,22 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         getSupportLoaderManager().initLoader(EXISTING_LOADER, null, this);
     }
 
-    private void save_changes() {
-
-
+    private void save_changes()
+    {
         productName = editProductName.getText().toString().trim();
-        try
-        {
-            price = Double.parseDouble(editPrice.getText().toString().trim());
-            quantity = Integer.parseInt(editQuantity.getText().toString().trim());
-            increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
-            decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
-        }
-        catch (NumberFormatException e){}
+        price = Double.parseDouble(editPrice.getText().toString().trim());
+        quantity = Integer.parseInt(editQuantity.getText().toString().trim());
+        increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
+        decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
         supplierName  = editSupplierName.getText().toString().trim();
         supplierPhoneNumber = editSupplierPhoneNumber.getText().toString().trim();
+
+        quantity = quantity + increaseQuantityBy - decreaseQuantityBy;
+
+        if(TextUtils.isEmpty(productName) && TextUtils.isEmpty(price.toString()) &&
+                TextUtils.isEmpty(String.valueOf(quantity)) &&
+                TextUtils.isEmpty(supplierName) && TextUtils.isEmpty(supplierPhoneNumber))
+            return ;
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(BookStoreEntry.COLUMN_PRODUCT_NAME, productName);
@@ -81,11 +87,57 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         } else {
             Toast.makeText(this, R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void delete_record(){
 
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
+        return new CursorLoader(this, currentUri, null,null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        if (cursor == null || cursor.getCount() < 1) {
+            return;
+        }
+        if (cursor.moveToFirst()) {
+       int indexName =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_NAME);
+       int indexPrice =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_PRICE);
+       int indexQuantity = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
+       int indexSupplierName =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+       int indexSupplierPhone =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
+
+        productName = cursor.getString(indexName);
+        try
+        {
+            price = cursor.getDouble(indexPrice);
+            quantity = cursor.getInt(indexQuantity);
+            increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
+            decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
+        }
+        catch (NumberFormatException e){}
+        supplierName  = cursor.getString(indexSupplierName);
+        supplierPhoneNumber = cursor.getString(indexSupplierPhone);
+
+       editProductName.setText(productName);
+       editPrice.setText(price.toString());
+       editQuantity.setText(String.valueOf(quantity));
+       editSupplierName.setText(supplierName);
+       editSupplierPhoneNumber.setText(supplierPhoneNumber);
+    }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        editProductName.setText("");
+        editPrice.setText("");
+        editQuantity.setText("");
+        editSupplierName.setText("");
+        editSupplierPhoneNumber.setText("");
     }
 
     @Override
@@ -110,55 +162,5 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
-        return new CursorLoader(this, currentUri, null,null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-
-        if (cursor == null || cursor.getCount() < 1) {
-            return;
-        }
-        if (cursor.moveToFirst()) {
-       int indexName =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_NAME);
-       int indexPrice =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_PRICE);
-       int indexQuantity = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
-       int indexSupplierName =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-       int indexSupplierPhone =  cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
-
-        productName = cursor.getString(indexName);
-        try
-        {
-            price = cursor.getDouble(indexPrice);
-            quantity = cursor.getInt(indexQuantity);
-            increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
-            decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
-        }
-        catch (NumberFormatException e){}
-        supplierName  = cursor.getString(indexSupplierName);
-        supplierPhoneNumber = cursor.getString(indexSupplierPhone);
-
-        quantity = quantity + increaseQuantityBy - decreaseQuantityBy;
-
-       editProductName.setText(productName);
-       editPrice.setText(price.toString());
-       editQuantity.setText(String.valueOf(quantity));
-       editSupplierName.setText(supplierName);
-       editSupplierPhoneNumber.setText(supplierPhoneNumber);
-    }
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        editProductName.setText("");
-        editPrice.setText("");
-        editQuantity.setText("");
-        editSupplierName.setText("");
-        editSupplierPhoneNumber.setText("");
     }
 }

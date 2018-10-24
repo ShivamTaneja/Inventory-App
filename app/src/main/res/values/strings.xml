@@ -19,7 +19,7 @@
     <string name="decrease_quantity_by">Decrease Quantity by</string>
     <string name="increase_quantity_by">Increase Quantity by</string>
     <string name="enter_decrease_in_qty">Enter Decrease in Qty</string>
-    <string name="one">1</string>
+    <string name="zero">0</string>
     <string name="discard_changes">Discard Changes</string>
     <string name="edit_details">Edit Details</string>
     <string name="save_changes">Save Changes</string>

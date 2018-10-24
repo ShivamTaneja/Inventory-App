@@ -8,9 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
+import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 import com.example.shivam.inventoryapp.R;
 
 public class InventoryProvider extends ContentProvider {
@@ -103,12 +104,12 @@ public class InventoryProvider extends ContentProvider {
         switch(match)
         {
             case inventory:
-                del_count = sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection, selectionArgs);
+                del_count = sqLiteDatabase.delete(BookStoreEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case inventory_Id:
                 selection = BookStoreContract.BookStoreEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                del_count = sqLiteDatabase.delete(BookStoreContract.BookStoreEntry.TABLE_NAME, selection,selectionArgs);
+                del_count = sqLiteDatabase.delete(BookStoreEntry.TABLE_NAME, selection,selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported with uri " + uri );
@@ -126,7 +127,7 @@ public class InventoryProvider extends ContentProvider {
             case inventory:
                 return update_data(uri, contentValues, selection, selectionArgs);
             case inventory_Id:
-                selection = BookStoreContract.BookStoreEntry._ID + "=?";
+                selection = BookStoreEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return update_data(uri, contentValues, selection, selectionArgs);
             default:
@@ -135,38 +136,42 @@ public class InventoryProvider extends ContentProvider {
     }
 
     private Uri insert_data(Uri uri, ContentValues contentValues){
-        String productName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME);
-        if(productName == null)
+        String productName = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_NAME);
+        if( TextUtils.isEmpty(productName))
         {
             throw new IllegalArgumentException("Product name is missing");
         }
 
-        int productPrice = contentValues.getAsInteger(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_PRICE);
+        int productPrice = contentValues.getAsInteger(BookStoreEntry.COLUMN_PRODUCT_PRICE);
         if(productPrice <=0 )
             throw new IllegalArgumentException("Product requires valid price");
 
-        int productQuantity = contentValues.getAsInteger(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
+
+        int productQuantity = contentValues.getAsInteger(BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
         if(productQuantity <= 0 )
             throw new IllegalArgumentException("Product requires valid quantity");
 
-        String productSupplierName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-        if( productSupplierName == null)
+
+        String productSupplierName = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+        if(TextUtils.isEmpty(productSupplierName))
         {
             throw new IllegalArgumentException("Product Supplier name is missing");
         }
 
-        String productSupplierPhoneNumber = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
+        String productSupplierPhoneNumber = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
+        if(!TextUtils.isEmpty(productSupplierPhoneNumber))
+        {
         long temp = Long.parseLong(productSupplierPhoneNumber);
         long min_range = Long.parseLong("1000000000");
-        long max_range = Long.parseLong("9999999999" );
+        long max_range = Long.parseLong("9999999999");
         if(min_range > temp || temp > max_range)
             throw new IllegalArgumentException("Product requires valid phone number");
-
+        }
 
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
-        long id = msqLiteDatabase.insert(BookStoreContract.BookStoreEntry.TABLE_NAME,null,contentValues);
+        long id = msqLiteDatabase.insert(BookStoreEntry.TABLE_NAME,null,contentValues);
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e("twitter", "Failed to insert row for " + uri);
             return null;
         }
         Toast.makeText(getContext(),R.string.data_inserted, Toast.LENGTH_SHORT).show();
@@ -177,44 +182,34 @@ public class InventoryProvider extends ContentProvider {
     private int update_data(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if(contentValues.size() == 0)
             return 0;
-        if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME))
+        if(contentValues.containsKey(BookStoreEntry.COLUMN_PRODUCT_NAME))
         {
-            String productName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_NAME);
-            if(productName == null)
-            {
+            String productName = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_NAME);
+            if(TextUtils.isEmpty(productName))
                 throw new IllegalArgumentException("Product name is missing");
-            }
         }
-        if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_PRICE))
+        if(contentValues.containsKey(BookStoreEntry.COLUMN_PRODUCT_PRICE))
         {
-            int productPrice = contentValues.getAsInteger(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_PRICE);
-            if(productPrice <=0 )
+            int productPrice = contentValues.getAsInteger(BookStoreEntry.COLUMN_PRODUCT_PRICE);
+            if(productPrice < 0 )
                 throw new IllegalArgumentException("Product requires valid price");
         }
         if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_QUANTITY))
         {
-            int productQuantity = contentValues.getAsInteger(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
-            if(productQuantity <= 0 )
+            int productQuantity = contentValues.getAsInteger(BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
+            if(productQuantity < 0 )
                 throw new IllegalArgumentException("Product requires valid quantity");
         }
-        if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME))
+        if(contentValues.containsKey(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME))
         {
-            String productSupplierName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-            if( productSupplierName == null)
-            {
+            String productSupplierName = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+            if( TextUtils.isEmpty(productSupplierName))
                 throw new IllegalArgumentException("Product Supplier name is missing");
-            }
+
         }
-        if(contentValues.containsKey(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER))
-        {
-            String productSupplierName = contentValues.getAsString(BookStoreContract.BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-            if( productSupplierName == null)
-            {
-                throw new IllegalArgumentException("Product Supplier name is missing");
-            }
-        }
+
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
-        int id = msqLiteDatabase.update(BookStoreContract.BookStoreEntry.TABLE_NAME, contentValues,
+        int id = msqLiteDatabase.update(BookStoreEntry.TABLE_NAME, contentValues,
                 selection, selectionArgs);
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to update row for " + uri);
@@ -225,5 +220,4 @@ public class InventoryProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         return id;
     }
-
 }

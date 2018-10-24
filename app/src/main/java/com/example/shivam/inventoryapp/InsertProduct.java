@@ -14,7 +14,7 @@ import com.example.shivam.inventoryapp.Data.BookStoreContract;
 public class InsertProduct extends AppCompatActivity {
 
     EditText editProductName, editPrice, editQuantity, editSupplierName, editSupplierPhoneNumber;
-    String productName="", supplierName="", supplierPhoneNumber="";
+    String productName, supplierName, supplierPhoneNumber;
     int quantity=0;
     Double price= 0.0;
 
