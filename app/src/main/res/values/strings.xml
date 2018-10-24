@@ -34,7 +34,7 @@
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
     <string name="one">1</string>
-    <string name="editor_delete_data_successful">deleted</string>
+    <string name="editor_delete_data_successful">Data deleted </string>
     <string name="editor_delete_data_failed">Error with deleting data</string>
     <string name="delete_dialog_msg">Delete this data?</string>
     <string name="delete">Delete</string>

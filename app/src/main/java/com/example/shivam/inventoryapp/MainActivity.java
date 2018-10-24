@@ -1,6 +1,7 @@
 package com.example.shivam.inventoryapp;
 
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -58,6 +62,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
     }
 
+    private void delete_record(){
+        int id = getContentResolver().delete(BookStoreEntry.CONTENT_URI, null, null);
+        if (id == -1) {
+            Toast.makeText(this, R.string.editor_delete_data_failed, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.editor_delete_data_successful, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_data);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                delete_record();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
@@ -85,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId())
         {
             case R.id.deleteAllRecord:
+                showDeleteConfirmationDialog();
                 break;
             default:
                 return true;
