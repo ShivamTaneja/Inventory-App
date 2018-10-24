@@ -31,4 +31,8 @@
     <string name="no_item_is_entered_yet">No Item Is Entered Yet</string>
     <string name="click_below_button_to_enter_data">Click below button to enter data</string>
     <string name="delete_all_data">Delete All data</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="one">1</string>
 </resources>

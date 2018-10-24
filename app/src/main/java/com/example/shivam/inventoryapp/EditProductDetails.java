@@ -1,6 +1,7 @@
 package com.example.shivam.inventoryapp;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,12 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -54,7 +58,55 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         currentUri = intent.getData();
 
         getSupportLoaderManager().initLoader(EXISTING_LOADER, null, this);
+
+        editProductName.setOnTouchListener(mTouchListener);
+        editPrice.setOnTouchListener(mTouchListener);
+        editQuantity.setOnTouchListener(mTouchListener);
+        editSupplierName.setOnTouchListener(mTouchListener);
+        editSupplierPhoneNumber.setOnTouchListener(mTouchListener);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!dataHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                };
+
+        showUnsavedChangesDialog(discardButtonClickListener);
+    }
+
+    private void showUnsavedChangesDialog( DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            dataHasChanged = true;
+            return false;
+        }
+    };
 
     private void save_changes()
     {

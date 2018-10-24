@@ -147,7 +147,7 @@
         android:ems="10"
         android:hint="@string/enter_increase_in_qty"
         android:inputType="number"
-        android:text="@string/zero"
+        android:text="@string/one"
         android:autofillHints="@string/enter_increase_in_qty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSupplierPhoneNumber" />
@@ -172,7 +172,7 @@
         android:ems="10"
         android:hint="@string/enter_decrease_in_qty"
         android:inputType="number"
-        android:text="@string/zero"
+        android:text="@string/one"
         android:autofillHints="@string/enter_decrease_in_qty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editIncreaseQuantity" />
