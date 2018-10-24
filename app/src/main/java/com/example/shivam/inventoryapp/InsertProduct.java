@@ -51,9 +51,11 @@ public class InsertProduct extends AppCompatActivity {
 
         Uri uri = getContentResolver().insert(BookStoreContract.BookStoreEntry.CONTENT_URI,contentValues);
         if(uri == null)
-            Toast.makeText(getApplicationContext(), "Data not inserted" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.data_not_inserted , Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getApplicationContext(), "Data inserted" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.data_inserted , Toast.LENGTH_SHORT).show();
+
+        finish();
     }
 
     @Override

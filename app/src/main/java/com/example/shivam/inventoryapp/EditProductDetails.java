@@ -1,5 +1,6 @@
 package com.example.shivam.inventoryapp;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
 
 import javax.security.auth.login.LoginException;
@@ -29,12 +30,12 @@ import javax.security.auth.login.LoginException;
 public class EditProductDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     EditText editProductName, editPrice, editQuantity, editSupplierName, editSupplierPhoneNumber,
-             editIncreaseQuantity, editDecreaseQuantity;
+            editIncreaseQuantity, editDecreaseQuantity;
     Button buttonSupplierPhoneNumber;
 
     String productName, supplierName, supplierPhoneNumber;
-    int quantity=0, increaseQuantityBy=0, decreaseQuantityBy=0;
-    Double price= 0.0;
+    int quantity = 0, increaseQuantityBy = 0, decreaseQuantityBy = 0;
+    Double price = 0.0;
 
     Uri currentUri;
     private static final int EXISTING_LOADER = 0;
@@ -62,6 +63,18 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         editDecreaseQuantity = findViewById(R.id.editDecreaseQuantity);
         buttonSupplierPhoneNumber = findViewById(R.id.buttonSupplierPhoneNumber);
 
+        buttonSupplierPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String uri = "tel:" + editSupplierPhoneNumber.getText().toString().trim();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse(uri));
+                startActivity(intent);
+
+            }
+        });
+
         Intent intent = getIntent();
         currentUri = intent.getData();
 
@@ -81,6 +94,7 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
             return;
         }
 
+
         DialogInterface.OnClickListener discardButtonClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -91,7 +105,6 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
 
         showUnsavedChangesDialog(discardButtonClickListener);
     }
-
 
     private void save_changes()
     {
@@ -118,12 +131,11 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         contentValues.put(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
         int id = getContentResolver().update(currentUri, contentValues, null, null );
+        if(id == -1)
+            Toast.makeText(getApplicationContext(), R.string.data_not_changed , Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), R.string.data_changed_successfully , Toast.LENGTH_SHORT).show();
 
-        if (id == -1) {
-            Toast.makeText(this, R.string.data_not_changed, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
-        }
         finish();
     }
 

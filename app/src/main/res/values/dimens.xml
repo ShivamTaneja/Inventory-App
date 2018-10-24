@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="eight">8dp</dimen>
-    <dimen name="sixteen">16dp</dimen>
     <dimen name="activity_margin">4dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="five">5dp</dimen>
+    <dimen name="sixteen">16dp</dimen>
+    <dimen name="twohundred">200dp</dimen>
 </resources>

@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
     }
-
     private void delete_record(){
         int id = getContentResolver().delete(BookStoreEntry.CONTENT_URI, null, null);
         if (id == -1) {
@@ -94,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
-        String[] projection = {BookStoreEntry._ID, BookStoreEntry.COLUMN_PRODUCT_NAME, BookStoreEntry.COLUMN_PRODUCT_PRICE};
+        String[] projection = {BookStoreEntry._ID, BookStoreEntry.COLUMN_PRODUCT_NAME, BookStoreEntry.COLUMN_PRODUCT_PRICE,
+                BookStoreEntry.COLUMN_PRODUCT_QUANTITY};
         return new CursorLoader(this, BookStoreEntry.CONTENT_URI, projection,
                 null, null, null);
     }

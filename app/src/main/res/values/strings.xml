@@ -25,6 +25,7 @@
     <string name="call_to_supplier">Call to Supplier</string>
     <string name="delete_record">Delete Record</string>
     <string name="data_inserted">Data Inserted</string>
+    <string name="data_not_inserted">Data Not Inserted</string>
     <string name="data_changed_successfully">Data Changed successfully</string>
     <string name="data_not_changed">data not changed</string>
     <string name="no_item_is_entered_yet">No Item Is Entered Yet</string>
@@ -39,4 +40,9 @@
     <string name="delete_dialog_msg">Delete this data?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="sale"> Sale </string>
+    <string name="missing_name">Product name is missing</string>
+    <string name="missing_price">Proper value of Product price is missing</string>
+    <string name="missing_quantity">Proper value of Product quantity is missing</string>
+    <string name="missing_supplier_name">Product supplier name is missing</string>
 </resources>

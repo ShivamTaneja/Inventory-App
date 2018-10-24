@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
-import android.support.annotation.Nullable;
+
 
 public class BookStoreDataBaseHelper extends SQLiteOpenHelper
 {

@@ -16,7 +16,6 @@ public final class BookStoreContract {
     public final static class BookStoreEntry implements BaseColumns{
 
         public static final String TABLE_NAME = "ProductInformation";
-
         public static final String COLUMN_PRODUCT_ID = BaseColumns._ID;
         public static final String COLUMN_PRODUCT_NAME = "ProductName";
         public static final String COLUMN_PRODUCT_PRICE = "Price";
