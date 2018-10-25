@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import com.example.shivam.inventoryapp.Data.BookStoreContract.BookStoreEntry;
@@ -29,7 +30,7 @@ public class BookInventoryCursorAdapter extends CursorAdapter {
         TextView name_list_item = view.findViewById(R.id.name);
         TextView price_list_item = view.findViewById(R.id.price);
         final TextView quantity_list_item = view.findViewById(R.id.quantity);
-        TextView sale_button = view.findViewById(R.id.saleButton);
+        Button sale_button = view.findViewById(R.id.saleButton);
 
         int nameColumnIndex = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_NAME);
         int priceColumnIndex = cursor.getColumnIndex(BookStoreEntry.COLUMN_PRODUCT_PRICE);

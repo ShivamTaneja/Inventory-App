@@ -16,7 +16,7 @@ public class BookStoreDataBaseHelper extends SQLiteOpenHelper
             + BookStoreEntry.COLUMN_PRODUCT_PRICE + " REAL NOT NULL , "
             + BookStoreEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER DEFAULT 1 , "
             + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME + " TEXT NOT NULL ,"
-            + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER + " TEXT );" ;
+            + BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER + " TEXT NOT NULL );" ;
 
     String SQL_DELETE_ENTRIES = "DROP TABLE " + BookStoreContract.BookStoreEntry.TABLE_NAME;
 

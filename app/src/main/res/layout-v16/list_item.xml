@@ -38,7 +38,7 @@
         android:textColor="@color/grey"
         android:layout_marginStart="@dimen/thirty" />
 
-    <TextView
+    <Button
         android:id="@+id/saleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

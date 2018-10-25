@@ -10,14 +10,14 @@
     <string name="enter_quantity">Enter Quantity</string>
     <string name="supplier_name">Supplier Name</string>
     <string name="supplier_phone_no">Supplier Phone No.</string>
-    <string name="enter_supplier_name">Enter Supplier Name</string>
-    <string name="enter_supplier_phone_no">Enter Supplier Phone No.</string>
+    <string name="enter_supplier_name"> Enter Supplier Name</string>
+    <string name="enter_supplier_phone_no">+91- Enter Supplier Phone No.</string>
     <string name="text_will_display_here">Text will display here</string>
     <string name="the_bookstore_contains">The BookStore contains</string>
     <string name="items">items.</string>
     <string name="enter_increase_in_qty">Enter Increase in Qty</string>
-    <string name="decrease_quantity_by">Decrease Quantity by</string>
-    <string name="increase_quantity_by">Increase Quantity by</string>
+    <string name="decrease_quantity_by">Decrease Quantity by 1</string>
+    <string name="increase_quantity_by">Increase Quantity by 1</string>
     <string name="enter_decrease_in_qty">Enter Decrease in Qty</string>
     <string name="discard_changes">Discard Changes</string>
     <string name="edit_details">Edit Details</string>
@@ -45,4 +45,8 @@
     <string name="missing_price">Proper value of Product price is missing</string>
     <string name="missing_quantity">Proper value of Product quantity is missing</string>
     <string name="missing_supplier_name">Product supplier name is missing</string>
+    <string name="missing_supplier_phone_number">Proper value of phone number is missing</string>
+    <string name="invlid_quantity">Invalid quantity</string>
+    <string name="invalid_price">invalid price</string>
+    <string name="missing_phone_number">Supplier phone number is missing</string>
 </resources>

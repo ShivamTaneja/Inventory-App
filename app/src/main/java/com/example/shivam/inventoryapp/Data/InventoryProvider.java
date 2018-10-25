@@ -141,8 +141,8 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
-
         int productQuantity = contentValues.getAsInteger(BookStoreEntry.COLUMN_PRODUCT_QUANTITY);
+
         if(productQuantity <= 0 )
         {
             Toast.makeText(getContext(), R.string.missing_quantity, Toast.LENGTH_SHORT).show();
@@ -157,6 +157,12 @@ public class InventoryProvider extends ContentProvider {
         }
 
         String productSupplierPhoneNumber = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
+        if(TextUtils.isEmpty(productSupplierPhoneNumber))
+        {
+            Toast.makeText(getContext(), R.string.missing_phone_number, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         if(!TextUtils.isEmpty(productSupplierPhoneNumber))
         {
         long temp = Long.parseLong(productSupplierPhoneNumber);
@@ -215,7 +221,15 @@ public class InventoryProvider extends ContentProvider {
                 return -1;
             }
         }
-
+        if(contentValues.containsKey(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER))
+        {
+            String productSupplierPhoneNumber = contentValues.getAsString(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
+            if( TextUtils.isEmpty(productSupplierPhoneNumber))
+            {
+                Toast.makeText(getContext(), R.string.missing_supplier_phone_number, Toast.LENGTH_SHORT).show();
+                return -1;
+            }
+        }
         SQLiteDatabase msqLiteDatabase = bookStoreDataBaseHelper.getWritableDatabase();
         int id = msqLiteDatabase.update(BookStoreEntry.TABLE_NAME, contentValues,
                 selection, selectionArgs);

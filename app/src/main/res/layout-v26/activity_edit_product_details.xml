@@ -33,11 +33,11 @@
 
     <EditText
         android:id="@+id/editPrice"
-        android:layout_width="200dp"
+        android:layout_width="@dimen/twohundred"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/sixteen"
+        android:layout_marginEnd="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
         android:ems="10"
         android:hint="@string/enter_price"
         android:inputType="numberDecimal"
@@ -127,55 +127,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSupplierName" />
 
-    <TextView
+    <Button
         android:id="@+id/IncreaseQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/eight"
         android:layout_marginLeft="@dimen/eight"
+        android:layout_marginEnd="@dimen/eight"
+        android:layout_marginRight="@dimen/eight"
+        android:layout_marginBottom="@dimen/sixteen"
+        android:background="@color/light_green"
         android:text="@string/increase_quantity_by"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editIncreaseQuantity"
+        app:layout_constraintBottom_toTopOf="@+id/DecreaseQuantity"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editIncreaseQuantity"
-        android:layout_width="@dimen/twohundred"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen"
-        android:layout_marginEnd="@dimen/sixteen"
-        android:layout_marginRight="@dimen/sixteen"
-        android:ems="10"
-        android:hint="@string/enter_increase_in_qty"
-        android:inputType="number"
-        android:text="@string/one"
-        android:autofillHints="@string/enter_increase_in_qty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSupplierPhoneNumber" />
 
-    <TextView
+    <Button
         android:id="@+id/DecreaseQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/eight"
         android:layout_marginLeft="@dimen/eight"
+        android:layout_marginEnd="@dimen/eight"
+        android:layout_marginRight="@dimen/eight"
+        android:layout_marginBottom="@dimen/sixteen"
+        android:background="@color/light_green"
         android:text="@string/decrease_quantity_by"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDecreaseQuantity"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editDecreaseQuantity"
-        android:layout_width="@dimen/twohundred"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen"
-        android:layout_marginEnd="@dimen/sixteen"
-        android:layout_marginRight="@dimen/sixteen"
-        android:ems="10"
-        android:hint="@string/enter_decrease_in_qty"
-        android:inputType="number"
-        android:text="@string/one"
-        android:autofillHints="@string/enter_decrease_in_qty"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSupplierPhoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editIncreaseQuantity" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonSupplierPhoneNumber"
@@ -185,7 +166,7 @@
         android:layout_marginLeft="@dimen/eight"
         android:layout_marginEnd="@dimen/eight"
         android:layout_marginRight="@dimen/eight"
-        android:layout_marginBottom="@dimen/eight"
+        android:layout_marginBottom="16dp"
         android:background="@color/light_green"
         android:text="@string/call_to_supplier"
         app:layout_constraintBottom_toBottomOf="parent"

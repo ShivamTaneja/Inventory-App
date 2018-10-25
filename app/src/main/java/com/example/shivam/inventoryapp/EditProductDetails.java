@@ -29,12 +29,11 @@ import javax.security.auth.login.LoginException;
 
 public class EditProductDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    EditText editProductName, editPrice, editQuantity, editSupplierName, editSupplierPhoneNumber,
-            editIncreaseQuantity, editDecreaseQuantity;
-    Button buttonSupplierPhoneNumber;
+    EditText editProductName, editPrice, editQuantity, editSupplierName, editSupplierPhoneNumber;
+    Button  buttonIncreaseQuantity, buttonDecreaseQuantity, buttonSupplierPhoneNumber;
 
     String productName, supplierName, supplierPhoneNumber;
-    int quantity = 0, increaseQuantityBy = 0, decreaseQuantityBy = 0;
+    int quantity = 0;
     Double price = 0.0;
 
     Uri currentUri;
@@ -59,19 +58,42 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         editQuantity = findViewById(R.id.editQuantity);
         editSupplierName = findViewById(R.id.editSupplierName);
         editSupplierPhoneNumber = findViewById(R.id.editSupplierPhoneNumber);
-        editIncreaseQuantity = findViewById(R.id.editIncreaseQuantity);
-        editDecreaseQuantity = findViewById(R.id.editDecreaseQuantity);
+
+        buttonIncreaseQuantity = findViewById(R.id.IncreaseQuantity);
+        buttonDecreaseQuantity = findViewById(R.id.DecreaseQuantity);
         buttonSupplierPhoneNumber = findViewById(R.id.buttonSupplierPhoneNumber);
 
         buttonSupplierPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String uri = "tel:" + editSupplierPhoneNumber.getText().toString().trim();
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse(uri));
-                startActivity(intent);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
 
+        buttonIncreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity = Integer.valueOf(editQuantity.getText().toString());
+                quantity = quantity + 1;
+                editQuantity.setText(String.valueOf(quantity));
+            }
+        });
+
+        buttonDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity = Integer.valueOf(editQuantity.getText().toString());
+                quantity = quantity - 1;
+                if(quantity < 0)
+                {
+                    quantity = 0;
+                }
+                editQuantity.setText(String.valueOf(quantity));
             }
         });
 
@@ -94,7 +116,6 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
             return;
         }
 
-
         DialogInterface.OnClickListener discardButtonClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -109,34 +130,62 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
     private void save_changes()
     {
         productName = editProductName.getText().toString().trim();
-        price = Double.parseDouble(editPrice.getText().toString().trim());
-        quantity = Integer.parseInt(editQuantity.getText().toString().trim());
-        increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
-        decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
-        supplierName  = editSupplierName.getText().toString().trim();
+        try {
+            price = Double.parseDouble(editPrice.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            Toast.makeText(getApplicationContext(), R.string.invalid_price, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        try {
+            quantity = Integer.parseInt(editQuantity.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            Toast.makeText(getApplicationContext(), R.string.invlid_quantity, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        supplierName = editSupplierName.getText().toString().trim();
         supplierPhoneNumber = editSupplierPhoneNumber.getText().toString().trim();
 
-        quantity = quantity + increaseQuantityBy - decreaseQuantityBy;
-
-        if(TextUtils.isEmpty(productName) && TextUtils.isEmpty(price.toString()) &&
+        if (TextUtils.isEmpty(productName) && TextUtils.isEmpty(price.toString()) &&
                 TextUtils.isEmpty(String.valueOf(quantity)) &&
                 TextUtils.isEmpty(supplierName) && TextUtils.isEmpty(supplierPhoneNumber))
-            return ;
+            return;
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BookStoreEntry.COLUMN_PRODUCT_NAME, productName);
-        contentValues.put(BookStoreEntry.COLUMN_PRODUCT_PRICE, price);
-        contentValues.put(BookStoreEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-        contentValues.put(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierName);
-        contentValues.put(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
+        if (TextUtils.isEmpty(productName)) {
+            Toast.makeText(this, R.string.missing_name, Toast.LENGTH_SHORT).show();
+        } else if (price < 0) {
+            Toast.makeText(this, R.string.missing_price, Toast.LENGTH_SHORT).show();
+        } else if (quantity < 0) {
+            Toast.makeText(this, R.string.missing_quantity, Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(supplierName)) {
+            Toast.makeText(this, R.string.missing_supplier_name, Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(supplierPhoneNumber)) {
+            Toast.makeText(this, R.string.missing_phone_number, Toast.LENGTH_SHORT).show();
+        }else if (!TextUtils.isEmpty(supplierPhoneNumber)) {
+            long temp = Long.parseLong(supplierPhoneNumber);
+            long min_range = Long.parseLong("1000000000");
+            long max_range = Long.parseLong("9999999999");
+            if (min_range > temp || temp > max_range) {
+                Toast.makeText(this, R.string.missing_supplier_phone_number, Toast.LENGTH_SHORT).show();
+            } else {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(BookStoreEntry.COLUMN_PRODUCT_NAME, productName);
+                contentValues.put(BookStoreEntry.COLUMN_PRODUCT_PRICE, price);
+                contentValues.put(BookStoreEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+                contentValues.put(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierName);
+                contentValues.put(BookStoreEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
 
-        int id = getContentResolver().update(currentUri, contentValues, null, null );
-        if(id == -1)
-            Toast.makeText(getApplicationContext(), R.string.data_not_changed , Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(getApplicationContext(), R.string.data_changed_successfully , Toast.LENGTH_SHORT).show();
+                int id = getContentResolver().update(currentUri, contentValues, null, null);
+                if (id == -1)
+                    Toast.makeText(getApplicationContext(), R.string.data_not_changed, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), R.string.data_changed_successfully, Toast.LENGTH_SHORT).show();
 
-        finish();
+                finish();
+            }
+        }
     }
 
     private void delete_record(){
@@ -172,8 +221,6 @@ public class EditProductDetails extends AppCompatActivity implements LoaderManag
         {
             price = cursor.getDouble(indexPrice);
             quantity = cursor.getInt(indexQuantity);
-            increaseQuantityBy = Integer.parseInt(editIncreaseQuantity.getText().toString().trim());
-            decreaseQuantityBy = Integer.parseInt(editDecreaseQuantity.getText().toString().trim());
         }
         catch (NumberFormatException e){}
         supplierName  = cursor.getString(indexSupplierName);
